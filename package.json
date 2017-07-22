@@ -5,9 +5,12 @@
   "main": "app.js",
   "dependencies": {
     "angular": "^1.6.5",
+    "angular-spinner": "^1.0.1",
     "angularjs": "0.0.1",
     "body-parser": "^1.17.2",
+    "bootstrap": "^3.3.7",
     "express": "^4.15.3",
+    "font-awesome": "^4.7.0",
     "unirest": "^0.5.1"
   },
   "devDependencies": {},

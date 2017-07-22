@@ -3,70 +3,99 @@
 <head>
     <script src="js/angular.min.js"></script>
     <script src="js/userStats.js"></script>
+    <script src="js/angular-spinner.min.js"></script>
+    <script src="js/spin.min.js"></script>
+    <link data-require="font-awesome@*" data-semver="4.5.0" rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css"/>
+    <link data-require="bootstrap-css@*" data-semver="3.3.6" rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css"/>
     <meta charset="UTF-8">
     <title>Battlefield Stats</title>
 </head>
 <body ng-app="bf1Stats" ng-controller="statsController">
-<div>
-    Username: <input type="text" ng-model="username"/> <br/>
-    Platform: <Select ng-model="platform">
-    <option value="3">PC</option>
-    <option value="1">Xbox</option>
-    <option value="2">PS4</option>
-</Select> <br/>
-    <button ng-click="getUserInfo()">Get Info</button>
+<!-- make a title bar  -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            Deets BF1 Stats
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="username">Username:</label> <input id="username" class="form-control" type="text"
+                                                           ng-model="username"/> <br/>
+            <label for="platform">Platform:</label> <select id="platform" class="form-control" ng-model="platform">
+            <option value="3">PC</option>
+            <option value="1">Xbox</option>
+            <option value="2">PS4</option>
+        </select> <br/>
+            <button class="btn btn-info btn-block" ng-click="getUserInfo()">Get Info</button>
+        </div>
+    </form>
 
+    {{errorMessage}}
 </div>
-{{errorMessage}}
 <br/>
+<div class="container">
+    <span us-spinner="{lines:15, length:11, width: 10, radius:21, scale:.75, corners:1, opacity: .25, speed: .5, trail: 35}"
+          spinner-key="loadSpinner"></span>
+    <table ng-show="userInfo != null && !isLoading" class="table">
+        <tr>
+            <th>USER</th>
+            <td>{{displayName}}</td>
+        </tr>
+        <tr>
+            <th>RANK</th>
+            <td>{{userInfo.rank.number}}</td>
+        </tr>
+        <tr>
+            <th>EXPERIENCE</th>
+            <td>{{userInfo.rankProgress.current + "/" + userInfo.rankProgress.total}}</td>
+        </tr>
+        <tr>
+            <th>KILLS</th>
+            <td>{{userInfo.kills}}</td>
+        </tr>
+        <tr>
+            <th>DEATHS</th>
+            <td>{{userInfo.deaths}}</td>
+        </tr>
+        <tr>
+            <th>WINS</th>
+            <td>{{userInfo.wins}}</td>
+        </tr>
+        <tr>
+            <th>LOSSES</th>
+            <td>{{userInfo.losses}}</td>
+        </tr>
+    </table>
+    <table ng-show="weapons != null && !isLoading" class="table">
+        <tr ng-repeat="type in weapons">
+            <th>{{type.name}}</th>
 
-<table ng-show="userInfo != null">
-    <tr>
-        <td>USER</td>
-        <td>{{displayName}}</td>
-    </tr>
-    <tr>
-        <td>RANK</td>
-        <td>{{userInfo.rank.number}}</td>
-    </tr>
-    <tr>
-        <td>EXPERIENCE</td>
-        <td>{{userInfo.rankProgress.current + "/" + userInfo.rankProgress.total}}</td>
-    </tr>
-    <tr>
-        <td>KILLS</td>
-        <td>{{userInfo.kills}}</td>
-    </tr>
-    <tr>
-        <td>DEATHS</td>
-        <td>{{userInfo.deaths}}</td>
-    </tr>
-    <tr>
-        <td>WINS</td>
-        <td>{{userInfo.wins}}</td>
-    </tr>
-    <tr>
-        <td>LOSSES</td>
-        <td>{{userInfo.losses}}</td>
-    </tr>
-    <tr ng-repeat="type in weapons">
-        <th>{{type.name}}</th>
-        <td>
-            <table>
-                <tr ng-repeat="weapon in type.weapons | orderBy: '-stats.values.kills'">
-                    <td>{{weapon.name}}</td>
-                    <td> Kills: {{weapon.stats.values.kills}}</td>
-                    <td>HeadShots: {{weapon.stats.values.headshots}}</td>
-                    <td>Hits: {{weapon.stats.values.hits}}</td>
-                    <td>Accuracy: {{weapon.stats.values.accuracy}}</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+            <td><a class="btn btn-link" ng-init="toggle[$index] = false" ng-click="toggle[$index] = !toggle[$index]">
+                <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$index]"></span>
+                <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$index]"></span>
+            </a>
+                <table ng-if="toggle[$index]" class="table table-striped">
+                    <tbody>
+                    <tr ng-repeat="weapon in type.weapons | orderBy: '-stats.values.kills'">
+                        <td>{{weapon.name}}</td>
+                        <td> Kills: {{weapon.stats.values.kills}}</td>
+                        <td>HeadShots: {{weapon.stats.values.headshots}}</td>
+                        <td>Hits: {{weapon.stats.values.hits}}</td>
+                        <td>Accuracy: {{weapon.stats.values.accuracy}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
 
 
-</table>
-
+    </table>
+</div>
 
 </body>
 </html>
