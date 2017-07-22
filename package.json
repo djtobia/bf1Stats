@@ -1,0 +1,19 @@
+{
+  "name": "nodepractice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "angular": "^1.6.5",
+    "angularjs": "0.0.1",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "unirest": "^0.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dylan Tobia",
+  "license": "ISC"
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="js/angular.min.js"></script>
+    <script src="js/userStats.js"></script>
+    <meta charset="UTF-8">
+    <title>Battlefield Stats</title>
+</head>
+<body ng-app="bf1Stats" ng-controller="statsController">
+<div>
+    Username: <input type="text" ng-model="username"/> <br/>
+    Platform: <Select ng-model="platform">
+    <option value="3">PC</option>
+    <option value="1">Xbox</option>
+    <option value="2">PS4</option>
+</Select> <br/>
+    <button ng-click="getUserInfo()">Get Info</button>
+
+</div>
+{{errorMessage}}
+<br/>
+
+<table ng-show="userInfo != null">
+    <tr>
+        <td>USER</td>
+        <td>{{displayName}}</td>
+    </tr>
+    <tr>
+        <td>RANK</td>
+        <td>{{userInfo.rank.number}}</td>
+    </tr>
+    <tr>
+        <td>EXPERIENCE</td>
+        <td>{{userInfo.rankProgress.current + "/" + userInfo.rankProgress.total}}</td>
+    </tr>
+    <tr>
+        <td>KILLS</td>
+        <td>{{userInfo.kills}}</td>
+    </tr>
+    <tr>
+        <td>DEATHS</td>
+        <td>{{userInfo.deaths}}</td>
+    </tr>
+    <tr>
+        <td>WINS</td>
+        <td>{{userInfo.wins}}</td>
+    </tr>
+    <tr>
+        <td>LOSSES</td>
+        <td>{{userInfo.losses}}</td>
+    </tr>
+    <tr ng-repeat="type in weapons">
+        <th>{{type.name}}</th>
+        <td>
+            <table>
+                <tr ng-repeat="weapon in type.weapons | orderBy: '-stats.values.kills'">
+                    <td>{{weapon.name}}</td>
+                    <td> Kills: {{weapon.stats.values.kills}}</td>
+                    <td>HeadShots: {{weapon.stats.values.headshots}}</td>
+                    <td>Hits: {{weapon.stats.values.hits}}</td>
+                    <td>Accuracy: {{weapon.stats.values.accuracy}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+
+</table>
+
+
+</body>
+</html>
