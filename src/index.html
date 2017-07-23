@@ -14,14 +14,16 @@
 </head>
 <body ng-app="bf1Stats" ng-controller="statsController">
 <!-- make a title bar  -->
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            Deets BF1 Stats
+            <h1>Deets BF1 Stats</h1>
         </div>
     </div>
 </nav>
-<div class="container">
+
+<div class="navbar-left">
     <form class="form-inline">
         <div class="form-group">
             <label for="username">Username:</label> <input id="username" class="form-control" type="text"
@@ -38,64 +40,68 @@
     {{errorMessage}}
 </div>
 <br/>
-<div class="container">
+<div class="panel">
+    <div class="panel-body">
+        <div class="table-responsive">
     <span us-spinner="{lines:15, length:11, width: 10, radius:21, scale:.75, corners:1, opacity: .25, speed: .5, trail: 35}"
           spinner-key="loadSpinner"></span>
-    <table ng-show="userInfo != null && !isLoading" class="table">
-        <tr>
-            <th>USER</th>
-            <td>{{displayName}}</td>
-        </tr>
-        <tr>
-            <th>RANK</th>
-            <td>{{userInfo.rank.number}}</td>
-        </tr>
-        <tr>
-            <th>EXPERIENCE</th>
-            <td>{{userInfo.rankProgress.current + "/" + userInfo.rankProgress.total}}</td>
-        </tr>
-        <tr>
-            <th>KILLS</th>
-            <td>{{userInfo.kills}}</td>
-        </tr>
-        <tr>
-            <th>DEATHS</th>
-            <td>{{userInfo.deaths}}</td>
-        </tr>
-        <tr>
-            <th>WINS</th>
-            <td>{{userInfo.wins}}</td>
-        </tr>
-        <tr>
-            <th>LOSSES</th>
-            <td>{{userInfo.losses}}</td>
-        </tr>
-    </table>
-    <table ng-show="weapons != null && !isLoading" class="table">
-        <tr ng-repeat="type in weapons">
-            <th>{{type.name}}</th>
+            <table ng-show="userInfo != null && !isLoading" class="table table-condensed">
+                <tr>
+                    <th>USER</th>
+                    <td>{{displayName}}</td>
+                </tr>
+                <tr>
+                    <th>RANK</th>
+                    <td>{{userInfo.rank.number}}</td>
+                </tr>
+                <tr>
+                    <th>EXPERIENCE</th>
+                    <td>{{userInfo.rankProgress.current + "/" + userInfo.rankProgress.total}}</td>
+                </tr>
+                <tr>
+                    <th>KILLS</th>
+                    <td>{{userInfo.kills}}</td>
+                </tr>
+                <tr>
+                    <th>DEATHS</th>
+                    <td>{{userInfo.deaths}}</td>
+                </tr>
+                <tr>
+                    <th>WINS</th>
+                    <td>{{userInfo.wins}}</td>
+                </tr>
+                <tr>
+                    <th>LOSSES</th>
+                    <td>{{userInfo.losses}}</td>
+                </tr>
+            </table>
+            <table ng-show="weapons != null && !isLoading" class="table table-bordered">
+                <tr ng-repeat="type in weapons |orderBy: 'name'">
+                    <th>{{type.name}} <a class="btn btn-link" ng-init="toggle[$index] = false"
+                                         ng-click="toggle[$index] = !toggle[$index]">
+                        <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$index]"></span>
+                        <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$index]"></span>
+                    </a></th>
 
-            <td><a class="btn btn-link" ng-init="toggle[$index] = false" ng-click="toggle[$index] = !toggle[$index]">
-                <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$index]"></span>
-                <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$index]"></span>
-            </a>
-                <table ng-if="toggle[$index]" class="table table-striped">
-                    <tbody>
-                    <tr ng-repeat="weapon in type.weapons | orderBy: '-stats.values.kills'">
-                        <td>{{weapon.name}}</td>
-                        <td> Kills: {{weapon.stats.values.kills}}</td>
-                        <td>HeadShots: {{weapon.stats.values.headshots}}</td>
-                        <td>Hits: {{weapon.stats.values.hits}}</td>
-                        <td>Accuracy: {{weapon.stats.values.accuracy}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+                    <td>
+                        <table ng-if="toggle[$index]" class="table">
+                            <tbody>
+                            <tr ng-repeat="weapon in type.weapons | orderBy: '-stats.values.kills'">
+                                <td>{{weapon.name}}</td>
+                                <td> Kills: {{weapon.stats.values.kills}}</td>
+                                <td>HeadShots: {{weapon.stats.values.headshots}}</td>
+                                <td>Hits: {{weapon.stats.values.hits}}</td>
+                                <td>Accuracy: {{weapon.stats.values.accuracy}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
 
 
-    </table>
+            </table>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>
